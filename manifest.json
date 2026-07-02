@@ -1,0 +1,10 @@
+{
+  "id": "alan-command-center",
+  "name": "Alan Command Center",
+  "version": "0.1.0",
+  "minAppVersion": "1.0.0",
+  "description": "A full-screen dashboard for Obsidian, built on the Moodboard design system.",
+  "author": "Alan Bao",
+  "authorUrl": "",
+  "isDesktopOnly": false
+}
