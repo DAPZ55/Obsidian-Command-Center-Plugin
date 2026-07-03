@@ -15,7 +15,7 @@ interface TabBarProps {
 
 export function TabBar({ activeTab, onChange }: TabBarProps) {
   return (
-    <div role="tablist" className="flex gap-1 border-b border-border-subtle px-4">
+    <div role="tablist" className="flex gap-1 border-b border-border-strong px-4">
       {TABS.map((tab) => {
         const isActive = tab.id === activeTab;
         return (
@@ -25,14 +25,14 @@ export function TabBar({ activeTab, onChange }: TabBarProps) {
             aria-selected={isActive}
             onClick={() => onChange(tab.id)}
             className={
-              'relative inline-flex items-center border-none bg-transparent px-3 pb-3 pt-2.5 font-sans text-md cursor-pointer transition-colors duration-[120ms] ease-[cubic-bezier(0.22,0.61,0.36,1)] ' +
-              (isActive ? 'text-text-primary font-semibold' : 'text-text-secondary font-medium')
+              'type-label relative inline-flex items-center border-none bg-transparent px-3 pb-3 pt-2.5 cursor-pointer transition-colors duration-[120ms] ease-[cubic-bezier(0.2,0,0,1)] ' +
+              (isActive ? 'text-text-body' : 'text-text-muted')
             }
           >
             {tab.label}
             <span
               className={
-                'absolute inset-x-2 -bottom-px h-0.5 rounded-full bg-accent transition-opacity duration-[120ms] ease-[cubic-bezier(0.22,0.61,0.36,1)] ' +
+                'absolute inset-x-2 -bottom-px h-0.5 rounded-full bg-accent-primary transition-opacity duration-[120ms] ease-[cubic-bezier(0.2,0,0,1)] ' +
                 (isActive ? 'opacity-100' : 'opacity-0')
               }
             />

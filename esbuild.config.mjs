@@ -16,10 +16,9 @@ if (!isDev && !isBuild) {
 const ROOT = process.cwd();
 
 const FONT_FACES = [
-  { family: 'Hanken Grotesk', style: 'normal', weight: '300 800', file: 'hanken-grotesk-normal.woff2' },
-  { family: 'Hanken Grotesk', style: 'italic', weight: '400', file: 'hanken-grotesk-italic.woff2' },
-  { family: 'Instrument Serif', style: 'normal', weight: '400', file: 'instrument-serif-normal.woff2' },
-  { family: 'Instrument Serif', style: 'italic', weight: '400', file: 'instrument-serif-italic.woff2' },
+  { family: 'Archivo', style: 'normal', weight: '700', file: 'archivo-700.woff2' },
+  { family: 'Archivo', style: 'normal', weight: '800', file: 'archivo-800.woff2' },
+  { family: 'Archivo', style: 'normal', weight: '900', file: 'archivo-900.woff2' },
   { family: 'Space Mono', style: 'normal', weight: '400', file: 'space-mono-normal-400.woff2' },
   { family: 'Space Mono', style: 'normal', weight: '700', file: 'space-mono-normal-700.woff2' },
   { family: 'Space Mono', style: 'italic', weight: '400', file: 'space-mono-italic-400.woff2' },

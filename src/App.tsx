@@ -9,7 +9,7 @@ export function App() {
   const [activeTab, setActiveTab] = useState<TabId>('command-center');
 
   return (
-    <div className="flex h-full w-full flex-col bg-bg-canvas text-text-primary">
+    <div className="flex h-full w-full flex-col bg-surface-page text-text-body">
       <TabBar activeTab={activeTab} onChange={setActiveTab} />
       <div className="relative flex-1 overflow-auto">
         <AnimatePresence mode="wait">

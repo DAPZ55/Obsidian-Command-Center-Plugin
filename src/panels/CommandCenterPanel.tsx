@@ -11,9 +11,9 @@ export function CommandCenterPanel() {
         transition={{ duration: 0.26, ease: [0.22, 0.61, 0.36, 1] }}
         className="flex flex-col items-center gap-3"
       >
-        <LayoutDashboard size={32} style={{ color: 'var(--accent)' }} />
-        <h1 className="font-display text-display-m text-text-primary">Command Center</h1>
-        <p className="font-sans text-md text-text-secondary">The shell is loading.</p>
+        <LayoutDashboard size={32} style={{ color: 'var(--accent-primary)' }} />
+        <h1 className="type-h1 text-text-body">Command Center</h1>
+        <p className="type-body text-text-muted">The shell is loading.</p>
       </motion.div>
     </div>
   );
