@@ -15,7 +15,10 @@ interface TabBarProps {
 
 export function TabBar({ activeTab, onChange }: TabBarProps) {
   return (
-    <div role="tablist" className="flex gap-1 border-b border-border-strong px-4">
+    <div
+      role="tablist"
+      className="flex gap-1 border border-border-strong bg-surface-card px-4 shadow-sm"
+    >
       {TABS.map((tab) => {
         const isActive = tab.id === activeTab;
         return (
@@ -32,7 +35,7 @@ export function TabBar({ activeTab, onChange }: TabBarProps) {
             {tab.label}
             <span
               className={
-                'absolute inset-x-2 -bottom-px h-0.5 rounded-full bg-accent-primary transition-opacity duration-[120ms] ease-[cubic-bezier(0.2,0,0,1)] ' +
+                'absolute inset-x-2 -bottom-px h-0.5 bg-accent-primary transition-opacity duration-[120ms] ease-[cubic-bezier(0.2,0,0,1)] ' +
                 (isActive ? 'opacity-100' : 'opacity-0')
               }
             />
