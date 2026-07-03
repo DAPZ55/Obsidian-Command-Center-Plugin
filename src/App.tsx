@@ -1,16 +1,25 @@
 import { h } from 'preact';
 import { useState } from 'preact/hooks';
 import { AnimatePresence, motion } from 'framer-motion';
+import type { App as ObsidianApp } from 'obsidian';
 import { TabBar, TabId } from './components/TabBar';
+import { SearchBar } from './components/SearchBar';
 import { CommandCenterPanel } from './panels/CommandCenterPanel';
 import { PlaceholderPanel } from './panels/PlaceholderPanel';
 
-export function App() {
+interface AppProps {
+  app: ObsidianApp;
+}
+
+export function App({ app }: AppProps) {
   const [activeTab, setActiveTab] = useState<TabId>('command-center');
 
   return (
     <div className="flex h-full w-full flex-col bg-surface-page text-text-body">
       <TabBar activeTab={activeTab} onChange={setActiveTab} />
+      <div className="px-4 py-sp-4">
+        <SearchBar app={app} />
+      </div>
       <div className="relative flex-1 overflow-auto">
         <AnimatePresence mode="wait">
           <motion.div

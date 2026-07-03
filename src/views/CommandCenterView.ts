@@ -25,7 +25,7 @@ export class CommandCenterView extends ItemView {
     const container = this.containerEl.children[1] as HTMLElement;
     container.empty();
     container.addClass('command-center-view');
-    render(h(App, {}), container);
+    render(h(App, { app: this.app }), container);
   }
 
   async onClose() {
