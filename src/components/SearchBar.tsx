@@ -1,6 +1,6 @@
 import { h, JSX } from 'preact';
 import { useMemo, useState } from 'preact/hooks';
-import { AnimatePresence, motion } from 'framer-motion';
+import { AnimatePresence, motion, steps } from 'framer-motion';
 import { Search } from 'lucide-react';
 import type { App as ObsidianApp, SearchResult, TFile } from 'obsidian';
 import { prepareFuzzySearch, sortSearchResults } from 'obsidian';
@@ -16,10 +16,9 @@ interface FileMatch {
 
 const MAX_RESULTS = 8;
 
-// steps(1,end)-equivalent: holds the initial value for the full duration,
-// then snaps to the final value — matches the --anim-fast token's stepped
-// feel, which framer-motion has no built-in "steps" easing for.
-const snapEase = (t: number) => (t < 1 ? 0 : 1);
+// Matches the --anim-fast token's steps(1,end) feel: holds the initial
+// value, then snaps at the end, instead of interpolating smoothly.
+const snapEase = steps(1, 'end');
 
 export function SearchBar({ app }: SearchBarProps) {
   const [query, setQuery] = useState('');
@@ -101,6 +100,9 @@ export function SearchBar({ app }: SearchBarProps) {
               <button
                 key={result.file.path}
                 type="button"
+                // Inline styles, not Tailwind's flex-col utility: Obsidian's theme CSS
+                // was beating the utility class's specificity and collapsing the two
+                // lines onto each other. Do not revert to className-only flex-col.
                 style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}
                 className={
                   'w-full gap-0.5 px-3 py-2 text-center transition-colors duration-[120ms] ease-[cubic-bezier(0.2,0,0,1)] ' +
