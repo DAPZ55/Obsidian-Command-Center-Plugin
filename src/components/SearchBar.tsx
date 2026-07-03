@@ -78,7 +78,7 @@ export function SearchBar({ app }: SearchBarProps) {
           type="text"
           value={query}
           placeholder="Search notes..."
-          className="type-body w-full border-none bg-transparent text-text-body outline-none placeholder:text-text-muted"
+          className="type-body w-full border-none bg-transparent text-center text-text-body outline-none placeholder:text-text-muted"
           onInput={(event: JSX.TargetedInputEvent<HTMLInputElement>) => {
             setQuery(event.currentTarget.value);
             setHighlightedIndex(0);
@@ -101,15 +101,16 @@ export function SearchBar({ app }: SearchBarProps) {
               <button
                 key={result.file.path}
                 type="button"
+                style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}
                 className={
-                  'flex w-full flex-col items-start gap-0.5 px-3 py-2 text-left transition-colors duration-[120ms] ease-[cubic-bezier(0.2,0,0,1)] ' +
+                  'w-full gap-0.5 px-3 py-2 text-center transition-colors duration-[120ms] ease-[cubic-bezier(0.2,0,0,1)] ' +
                   (index === highlightedIndex ? 'bg-accent-highlight' : 'bg-surface-card hover:bg-accent-highlight')
                 }
                 onMouseEnter={() => setHighlightedIndex(index)}
                 onClick={() => openFile(result.file)}
               >
-                <span className="type-body text-text-body">{result.file.basename}</span>
-                <span className="type-caption text-text-muted">
+                <span className="type-body block w-full text-text-body">{result.file.basename}</span>
+                <span className="type-caption block w-full text-text-muted">
                   {result.file.parent?.path || '/'}
                 </span>
               </button>
