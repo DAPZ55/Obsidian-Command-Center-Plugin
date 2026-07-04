@@ -60,17 +60,21 @@ export class CanvasSettingTab extends PluginSettingTab {
       .setDesc('Fetch your active courses, then toggle which ones show up in the Canvas tab')
       .addButton((button) =>
         button.setButtonText('Fetch courses').onClick(async () => {
-          await this.renderCoursePicker(containerEl);
+          await this.renderCoursePicker(courseListEl);
         })
       );
+
+    const courseListEl = containerEl.createDiv();
   }
 
-  async renderCoursePicker(containerEl: HTMLElement): Promise<void> {
+  async renderCoursePicker(courseListEl: HTMLElement): Promise<void> {
+    courseListEl.empty();
+
     let courses: CanvasCourse[];
     try {
       courses = await fetchCourses(this.plugin.settings.baseUrl, this.plugin.settings.token);
     } catch (e) {
-      new Setting(containerEl).setDesc(
+      new Setting(courseListEl).setDesc(
         `Couldn't fetch courses: ${e instanceof Error ? e.message : String(e)}`
       );
       return;
@@ -78,13 +82,13 @@ export class CanvasSettingTab extends PluginSettingTab {
 
     for (const course of courses) {
       const idStr = String(course.id);
-      new Setting(containerEl)
+      new Setting(courseListEl)
         .setName(course.name)
         .addToggle((toggle) =>
           toggle
             .setValue(this.plugin.settings.selectedCourses.some((c) => c.id === idStr))
             .onChange(async (value) => {
-              if (value) {
+              if (value && !this.plugin.settings.selectedCourses.some((c) => c.id === idStr)) {
                 this.plugin.settings.selectedCourses.push({ id: idStr, name: course.name });
               } else {
                 this.plugin.settings.selectedCourses = this.plugin.settings.selectedCourses.filter(
