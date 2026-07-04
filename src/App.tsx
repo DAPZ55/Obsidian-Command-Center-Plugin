@@ -2,6 +2,7 @@ import { h } from 'preact';
 import { useState } from 'preact/hooks';
 import { AnimatePresence, motion } from 'framer-motion';
 import type { App as ObsidianApp } from 'obsidian';
+import type { default as AlanCommandCenterPlugin } from './main';
 import { TabBar, TabId } from './components/TabBar';
 import { SearchBar } from './components/SearchBar';
 import { CommandCenterPanel } from './panels/CommandCenterPanel';
@@ -9,9 +10,10 @@ import { PlaceholderPanel } from './panels/PlaceholderPanel';
 
 interface AppProps {
   app: ObsidianApp;
+  plugin: AlanCommandCenterPlugin;
 }
 
-export function App({ app }: AppProps) {
+export function App({ app, plugin }: AppProps) {
   const [activeTab, setActiveTab] = useState<TabId>('command-center');
 
   return (
