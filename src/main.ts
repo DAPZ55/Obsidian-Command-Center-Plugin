@@ -29,7 +29,7 @@ export default class AlanCommandCenterPlugin extends Plugin {
   onunload() {}
 
   async loadSettings() {
-    this.settings = Object.assign({}, DEFAULT_CANVAS_SETTINGS, await this.loadData());
+    this.settings = Object.assign(structuredClone(DEFAULT_CANVAS_SETTINGS), await this.loadData());
   }
 
   async saveSettings() {
