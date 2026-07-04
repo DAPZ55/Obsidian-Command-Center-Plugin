@@ -1,11 +1,12 @@
 import { h } from 'preact';
 
-export type TabId = 'command-center' | 'news-signals' | 'intelligence';
+export type TabId = 'command-center' | 'news-signals' | 'intelligence' | 'canvas';
 
 const TABS: { id: TabId; label: string }[] = [
   { id: 'command-center', label: 'Command Center' },
   { id: 'news-signals', label: 'News and Signals' },
   { id: 'intelligence', label: 'Intelligence' },
+  { id: 'canvas', label: 'Canvas' },
 ];
 
 interface TabBarProps {
