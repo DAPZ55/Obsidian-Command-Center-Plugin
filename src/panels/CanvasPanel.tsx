@@ -3,14 +3,17 @@ import { h } from 'preact';
 import { useState } from 'preact/hooks';
 import type AlanCommandCenterPlugin from '../main';
 import { CourseAssignmentsView } from './CourseAssignmentsView';
+import { CanvasOverviewView } from './CanvasOverviewView';
 
 interface CanvasPanelProps {
   plugin: AlanCommandCenterPlugin;
 }
 
+const OVERVIEW_TAB_ID = 'overview';
+
 export function CanvasPanel({ plugin }: CanvasPanelProps) {
   const courses = plugin.settings.selectedCourses;
-  const [activeCourseId, setActiveCourseId] = useState<string | null>(courses[0]?.id ?? null);
+  const [activeSubTabId, setActiveSubTabId] = useState<string>(OVERVIEW_TAB_ID);
   const [refreshKey, setRefreshKey] = useState(0);
 
   if (!plugin.settings.baseUrl || !plugin.settings.token) {
@@ -29,27 +32,27 @@ export function CanvasPanel({ plugin }: CanvasPanelProps) {
     );
   }
 
-  const currentCourseId =
-    activeCourseId && courses.some((c) => c.id === activeCourseId) ? activeCourseId : courses[0].id;
+  const subTabs = [{ id: OVERVIEW_TAB_ID, name: 'Overview' }, ...courses];
+  const currentSubTabId = subTabs.some((t) => t.id === activeSubTabId) ? activeSubTabId : OVERVIEW_TAB_ID;
 
   return (
     <div className="flex h-full w-full flex-col">
       <div className="flex items-center justify-between border border-border-strong bg-surface-card px-4 shadow-sm">
         <div role="tablist" className="flex gap-1">
-          {courses.map((course) => {
-            const isActive = course.id === currentCourseId;
+          {subTabs.map((tab) => {
+            const isActive = tab.id === currentSubTabId;
             return (
               <button
-                key={course.id}
+                key={tab.id}
                 role="tab"
                 aria-selected={isActive}
-                onClick={() => setActiveCourseId(course.id)}
+                onClick={() => setActiveSubTabId(tab.id)}
                 className={
                   'type-label relative inline-flex items-center border-none bg-transparent px-3 py-2.5 cursor-pointer transition-colors duration-[120ms] ease-[cubic-bezier(0.2,0,0,1)] ' +
                   (isActive ? 'text-text-body' : 'text-text-muted')
                 }
               >
-                {course.name}
+                {tab.name}
                 <span
                   className={
                     'absolute inset-x-2 -bottom-px h-0.5 bg-accent-primary transition-opacity duration-[120ms] ease-[cubic-bezier(0.2,0,0,1)] ' +
@@ -68,7 +71,15 @@ export function CanvasPanel({ plugin }: CanvasPanelProps) {
         </button>
       </div>
       <div className="flex-1 overflow-auto p-sp-4">
-        <CourseAssignmentsView key={currentCourseId + '-' + refreshKey} plugin={plugin} courseId={currentCourseId} />
+        {currentSubTabId === OVERVIEW_TAB_ID ? (
+          <CanvasOverviewView key={'overview-' + refreshKey} plugin={plugin} />
+        ) : (
+          <CourseAssignmentsView
+            key={currentSubTabId + '-' + refreshKey}
+            plugin={plugin}
+            courseId={currentSubTabId}
+          />
+        )}
       </div>
     </div>
   );
