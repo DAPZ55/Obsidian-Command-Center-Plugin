@@ -8,6 +8,7 @@ import { SearchBar } from './components/SearchBar';
 import { CommandCenterPanel } from './panels/CommandCenterPanel';
 import { PlaceholderPanel } from './panels/PlaceholderPanel';
 import { CanvasPanel } from './panels/CanvasPanel';
+import { NewsPanel } from './panels/NewsPanel';
 
 interface AppProps {
   app: ObsidianApp;
@@ -34,7 +35,7 @@ export function App({ app, plugin }: AppProps) {
             className="h-full w-full"
           >
             {activeTab === 'command-center' && <CommandCenterPanel />}
-            {activeTab === 'news-signals' && <PlaceholderPanel label="News and Signals" />}
+            {activeTab === 'news-signals' && <NewsPanel plugin={plugin} />}
             {activeTab === 'intelligence' && <PlaceholderPanel label="Intelligence" />}
             {activeTab === 'canvas' && <CanvasPanel plugin={plugin} />}
           </motion.div>
