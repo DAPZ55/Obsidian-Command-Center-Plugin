@@ -35,24 +35,25 @@ export function TileGrid({ plugin, onSelect }: TileGridProps) {
 
   return (
     <div className="mx-auto grid max-w-2xl grid-cols-2 gap-[5px]">
-      {tiles.map((tile) => (
-        <motion.button
+      {tiles.map((tile, index) => (
+        <motion.div
           key={tile.id}
+          role="button"
+          tabIndex={0}
           onClick={() => onSelect(tile.id)}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter' || e.key === ' ') onSelect(tile.id);
+          }}
           whileHover={{ scale: 1.015 }}
           whileTap={{ scale: 0.985 }}
           className="cursor-pointer"
           style={{
-            border: 'none',
-            background: 'transparent',
-            padding: 0,
-            display: 'block',
-            width: '100%',
-            position: 'static',
+            gridColumn: (index % 2) + 1,
+            gridRow: Math.floor(index / 2) + 1,
           }}
         >
           <TileCard icon={tile.icon} label={tile.label} snippet={tile.snippet} loading={tile.loading} />
-        </motion.button>
+        </motion.div>
       ))}
     </div>
   );
