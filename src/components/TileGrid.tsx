@@ -34,13 +34,13 @@ export function TileGrid({ plugin, onSelect }: TileGridProps) {
   ];
 
   return (
-    <div className="mx-auto grid max-w-2xl grid-cols-2 gap-sp-4">
+    <div className="mx-auto grid max-w-2xl grid-cols-2 gap-[5px]">
       {tiles.map((tile) => (
         <motion.button
           key={tile.id}
           onClick={() => onSelect(tile.id)}
-          whileHover={{ scale: 1.03 }}
-          whileTap={{ scale: 0.97 }}
+          whileHover={{ scale: 1.015 }}
+          whileTap={{ scale: 0.985 }}
           className="cursor-pointer"
           style={{ border: 'none', background: 'transparent', padding: 0 }}
         >
