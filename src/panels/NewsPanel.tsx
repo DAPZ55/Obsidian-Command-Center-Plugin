@@ -84,14 +84,20 @@ export function NewsPanel({ plugin }: NewsPanelProps) {
         {!loading &&
           !error &&
           (articles ?? []).map((a) => (
-            <div key={a.link} className="border border-border-strong bg-surface-card p-sp-3 shadow-sm text-center">
+            <a
+              key={a.link}
+              href={a.link}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="block border border-border-strong bg-surface-card p-sp-3 shadow-sm text-center no-underline text-text-body"
+            >
               <p className="type-body">{a.title}</p>
               <p className="type-small text-text-muted">
                 {a.source}
                 {' · '}
                 {a.pubDate ? new Date(a.pubDate).toLocaleDateString() : 'No date'}
               </p>
-            </div>
+            </a>
           ))}
       </div>
     </div>
