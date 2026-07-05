@@ -22,3 +22,17 @@ export interface CanvasAssignmentGroup {
   group_weight: number;
   assignments: CanvasAssignment[];
 }
+
+export interface CanvasCourseGrade {
+  id: number;
+  name: string;
+  current_score: number | null;
+}
+
+export interface CanvasAnnouncement {
+  id: number;
+  title: string;
+  message: string;
+  posted_at: string | null;
+  context_code: string;
+}
