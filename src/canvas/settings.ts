@@ -8,18 +8,20 @@ export interface SelectedCourse {
   name: string;
 }
 
-export interface CanvasSettings {
+export interface PluginSettings {
   baseUrl: string;
   token: string;
   selectedCourses: SelectedCourse[];
   goalsByCourseId: Record<string, number>;
+  newsTopic: string;
 }
 
-export const DEFAULT_CANVAS_SETTINGS: CanvasSettings = {
+export const DEFAULT_PLUGIN_SETTINGS: PluginSettings = {
   baseUrl: '',
   token: '',
   selectedCourses: [],
   goalsByCourseId: {},
+  newsTopic: 'technology',
 };
 
 export class CanvasSettingTab extends PluginSettingTab {

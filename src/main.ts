@@ -1,10 +1,10 @@
 import { Plugin, WorkspaceLeaf } from 'obsidian';
 import { CommandCenterView, VIEW_TYPE_COMMAND_CENTER } from './views/CommandCenterView';
-import { CanvasSettingTab, DEFAULT_CANVAS_SETTINGS } from './canvas/settings';
-import type { CanvasSettings } from './canvas/settings';
+import { CanvasSettingTab, DEFAULT_PLUGIN_SETTINGS } from './canvas/settings';
+import type { PluginSettings } from './canvas/settings';
 
 export default class AlanCommandCenterPlugin extends Plugin {
-  settings: CanvasSettings = DEFAULT_CANVAS_SETTINGS;
+  settings: PluginSettings = DEFAULT_PLUGIN_SETTINGS;
 
   async onload() {
     await this.loadSettings();
@@ -29,7 +29,7 @@ export default class AlanCommandCenterPlugin extends Plugin {
   onunload() {}
 
   async loadSettings() {
-    this.settings = Object.assign(structuredClone(DEFAULT_CANVAS_SETTINGS), await this.loadData());
+    this.settings = Object.assign(structuredClone(DEFAULT_PLUGIN_SETTINGS), await this.loadData());
   }
 
   async saveSettings() {
