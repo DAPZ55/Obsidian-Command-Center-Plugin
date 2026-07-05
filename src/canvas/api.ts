@@ -54,3 +54,20 @@ export async function fetchAnnouncements(
   const raw = res.json as CanvasAnnouncement[];
   return raw.slice(0, 10);
 }
+
+export async function fetchNearestDueDate(
+  baseUrl: string,
+  token: string,
+  courseIds: string[]
+): Promise<string | null> {
+  const groupsByCourse = await Promise.all(
+    courseIds.map((id) => fetchCourseAssignmentGroups(baseUrl, token, Number(id)))
+  );
+  const now = Date.now();
+  const dueDates = groupsByCourse
+    .flatMap((groups) => groups.flatMap((g) => g.assignments))
+    .map((a) => a.due_at)
+    .filter((d): d is string => d !== null && new Date(d).getTime() > now)
+    .sort((a, b) => new Date(a).getTime() - new Date(b).getTime());
+  return dueDates[0] ?? null;
+}
