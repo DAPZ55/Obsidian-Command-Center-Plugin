@@ -9,8 +9,6 @@ interface SnippetState {
   loading: boolean;
 }
 
-const SNIPPET_TRUNCATE_LENGTH = 60;
-
 export function useNewsSnippet(plugin: AlanCommandCenterPlugin): SnippetState {
   const [snippet, setSnippet] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
@@ -22,12 +20,7 @@ export function useNewsSnippet(plugin: AlanCommandCenterPlugin): SnippetState {
     fetchNews(plugin.settings.newsTopic)
       .then((articles) => {
         if (cancelled) return;
-        const title = articles[0]?.title ?? null;
-        setSnippet(
-          title && title.length > SNIPPET_TRUNCATE_LENGTH
-            ? title.slice(0, SNIPPET_TRUNCATE_LENGTH) + '…'
-            : title
-        );
+        setSnippet(articles[0]?.title ?? null);
       })
       .catch(() => {
         if (!cancelled) setSnippet(null);

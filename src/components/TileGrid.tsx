@@ -34,7 +34,7 @@ export function TileGrid({ plugin, onSelect }: TileGridProps) {
   ];
 
   return (
-    <div className="flex flex-wrap justify-center gap-sp-4">
+    <div className="mx-auto grid max-w-2xl grid-cols-2 gap-sp-4">
       {tiles.map((tile) => (
         <motion.button
           key={tile.id}
