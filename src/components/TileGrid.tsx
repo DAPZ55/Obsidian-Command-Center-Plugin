@@ -41,7 +41,8 @@ export function TileGrid({ plugin, onSelect }: TileGridProps) {
           onClick={() => onSelect(tile.id)}
           whileHover={{ scale: 1.03 }}
           whileTap={{ scale: 0.97 }}
-          className="border-none bg-transparent p-0 cursor-pointer"
+          className="cursor-pointer"
+          style={{ border: 'none', background: 'transparent', padding: 0 }}
         >
           <TileCard icon={tile.icon} label={tile.label} snippet={tile.snippet} loading={tile.loading} />
         </motion.button>
