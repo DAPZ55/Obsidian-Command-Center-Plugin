@@ -33,17 +33,30 @@ export async function readTodaySections(
   };
 }
 
+// ponytail: serializes read-modify-write so concurrent saves (e.g. blur + click
+// firing together) don't read the same snapshot and clobber each other's write.
+let writeQueue: Promise<void> = Promise.resolve();
+
+function enqueueWrite(operation: () => Promise<void>): Promise<void> {
+  writeQueue = writeQueue.then(operation, operation);
+  return writeQueue;
+}
+
 export async function saveReflection(
   app: App,
   file: TFile,
   prompt: string,
   answer: string
 ): Promise<void> {
-  const content = await app.vault.read(file);
-  await app.vault.modify(file, upsertReflectionSection(content, prompt, answer));
+  return enqueueWrite(async () => {
+    const content = await app.vault.read(file);
+    await app.vault.modify(file, upsertReflectionSection(content, prompt, answer));
+  });
 }
 
 export async function saveBrainDump(app: App, file: TFile, items: BrainDumpItem[]): Promise<void> {
-  const content = await app.vault.read(file);
-  await app.vault.modify(file, upsertBrainDumpSection(content, items));
+  return enqueueWrite(async () => {
+    const content = await app.vault.read(file);
+    await app.vault.modify(file, upsertBrainDumpSection(content, items));
+  });
 }

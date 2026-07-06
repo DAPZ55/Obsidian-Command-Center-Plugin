@@ -98,4 +98,32 @@ import {
   assert.ok(updated.includes('New answer.'));
 }
 
+// 7. Upserting Reflection when a trailing, unrelated heading follows Brain Dump
+// must leave that unrelated section completely untouched.
+{
+  const content = [
+    '## Reflection',
+    '**What went well today?**',
+    'Old answer.',
+    '',
+    '## Brain Dump',
+    '- [Task] old task',
+    '',
+    '## Meeting Notes',
+    'Talked to advisor about thesis timeline.',
+    '',
+  ].join('\n');
+
+  const updated = upsertReflectionSection(content, 'What went well today?', 'New answer.');
+  assert.ok(updated.includes('New answer.'));
+  assert.ok(!updated.includes('Old answer.'));
+  assert.ok(updated.includes('## Brain Dump'));
+  assert.ok(updated.includes('- [Task] old task'));
+  assert.ok(updated.includes('## Meeting Notes'));
+  assert.ok(
+    updated.includes('Talked to advisor about thesis timeline.'),
+    'unrelated trailing section preserved verbatim'
+  );
+}
+
 console.log('sections self-check: all assertions passed');
