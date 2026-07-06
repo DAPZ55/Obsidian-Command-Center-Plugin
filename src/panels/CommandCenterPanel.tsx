@@ -20,6 +20,7 @@ export function CommandCenterPanel({ app }: CommandCenterPanelProps) {
   const [newItemCategory, setNewItemCategory] = useState<BrainDumpCategory>('Task');
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [saveError, setSaveError] = useState<string | null>(null);
 
   const prompt = getPromptForDate();
 
@@ -51,7 +52,9 @@ export function CommandCenterPanel({ app }: CommandCenterPanelProps) {
 
   const handleAnswerBlur = () => {
     if (!file) return;
-    void saveReflection(app, file, prompt, answer);
+    saveReflection(app, file, prompt, answer)
+      .then(() => setSaveError(null))
+      .catch((e) => setSaveError(e instanceof Error ? e.message : String(e)));
   };
 
   const handleAddItem = () => {
@@ -60,14 +63,18 @@ export function CommandCenterPanel({ app }: CommandCenterPanelProps) {
     const updated = [...items, { category: newItemCategory, text: trimmed }];
     setItems(updated);
     setNewItemText('');
-    void saveBrainDump(app, file, updated);
+    saveBrainDump(app, file, updated)
+      .then(() => setSaveError(null))
+      .catch((e) => setSaveError(e instanceof Error ? e.message : String(e)));
   };
 
   const handleDeleteItem = (index: number) => {
     if (!file) return;
     const updated = items.filter((_, i) => i !== index);
     setItems(updated);
-    void saveBrainDump(app, file, updated);
+    saveBrainDump(app, file, updated)
+      .then(() => setSaveError(null))
+      .catch((e) => setSaveError(e instanceof Error ? e.message : String(e)));
   };
 
   if (loading) {
@@ -91,6 +98,11 @@ export function CommandCenterPanel({ app }: CommandCenterPanelProps) {
 
   return (
     <div className="flex h-full w-full flex-col gap-sp-4 overflow-y-auto p-sp-4">
+      {saveError && (
+        <div className="border border-border-strong bg-surface-well p-sp-3 text-center">
+          <p className="type-small text-accent-danger">Couldn't save — check your vault. ({saveError})</p>
+        </div>
+      )}
       <div className="border border-border-strong bg-surface-card p-sp-4 shadow-sm text-center">
         <p className="type-label text-text-muted">{prompt}</p>
         <textarea
