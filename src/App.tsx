@@ -50,7 +50,7 @@ export function App({ app, plugin }: AppProps) {
                   </button>
                 </div>
                 <div className="flex-1 overflow-auto">
-                  {activeSection === 'command-center' && <CommandCenterPanel />}
+                  {activeSection === 'command-center' && <CommandCenterPanel app={app} />}
                   {activeSection === 'news-signals' && <NewsPanel plugin={plugin} />}
                   {activeSection === 'intelligence' && <PlaceholderPanel label="Intelligence" />}
                   {activeSection === 'canvas' && <CanvasPanel plugin={plugin} />}
