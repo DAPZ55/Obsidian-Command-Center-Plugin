@@ -82,4 +82,20 @@ import {
   assert.ok(updated.includes('- [Task] old task'), 'brain dump section untouched');
 }
 
+// 6. A user-written heading that merely starts with our heading text must not be
+// mistaken for the managed section (e.g. "## Reflection on Life" is not "## Reflection")
+{
+  const content = [
+    '## Reflection on Life',
+    'Some unrelated personal essay content.',
+    '',
+  ].join('\n');
+
+  const updated = upsertReflectionSection(content, 'What went well today?', 'New answer.');
+  assert.ok(updated.includes('## Reflection on Life'));
+  assert.ok(updated.includes('Some unrelated personal essay content.'), 'unrelated heading and content preserved, not overwritten');
+  assert.ok(updated.includes('## Reflection\n'), 'new managed section appended separately');
+  assert.ok(updated.includes('New answer.'));
+}
+
 console.log('sections self-check: all assertions passed');

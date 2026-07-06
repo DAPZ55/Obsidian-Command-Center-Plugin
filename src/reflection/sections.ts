@@ -4,14 +4,20 @@ const REFLECTION_HEADING = '## Reflection';
 const BRAIN_DUMP_HEADING = '## Brain Dump';
 
 function findSectionBounds(content: string, heading: string): { start: number; end: number } | null {
-  const startIndex = content.indexOf(heading);
-  if (startIndex === -1) return null;
+  const headingPattern = new RegExp(`^${escapeRegExp(heading)}$`, 'm');
+  const match = headingPattern.exec(content);
+  if (!match) return null;
 
+  const startIndex = match.index;
   const afterHeading = startIndex + heading.length;
   const nextHeadingMatch = content.slice(afterHeading).match(/\n## /);
   const end = nextHeadingMatch ? afterHeading + (nextHeadingMatch.index as number) : content.length;
 
   return { start: startIndex, end };
+}
+
+function escapeRegExp(value: string): string {
+  return value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 }
 
 function upsertSection(content: string, heading: string, newSection: string): string {
