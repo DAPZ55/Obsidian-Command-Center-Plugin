@@ -3,13 +3,15 @@ import { h } from 'preact';
 import { motion } from 'framer-motion';
 import { LayoutDashboard, Newspaper, Brain, GraduationCap } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
+import type { App as ObsidianApp } from 'obsidian';
 import type AlanCommandCenterPlugin from '../main';
 import { TileCard } from './TileCard';
-import { useNewsSnippet, useCanvasSnippet } from './tileSnippets';
+import { useNewsSnippet, useCanvasSnippet, useBrainDumpSnippet } from './tileSnippets';
 
 export type SectionId = 'command-center' | 'news-signals' | 'intelligence' | 'canvas';
 
 interface TileGridProps {
+  app: ObsidianApp;
   plugin: AlanCommandCenterPlugin;
   onSelect: (section: SectionId) => void;
 }
@@ -22,12 +24,19 @@ interface Tile {
   loading: boolean;
 }
 
-export function TileGrid({ plugin, onSelect }: TileGridProps) {
+export function TileGrid({ app, plugin, onSelect }: TileGridProps) {
   const news = useNewsSnippet(plugin);
   const canvas = useCanvasSnippet(plugin);
+  const brainDump = useBrainDumpSnippet(app);
 
   const tiles: Tile[] = [
-    { id: 'command-center', label: 'Command Center', icon: LayoutDashboard, snippet: null, loading: false },
+    {
+      id: 'command-center',
+      label: 'Command Center',
+      icon: LayoutDashboard,
+      snippet: brainDump.snippet,
+      loading: brainDump.loading,
+    },
     { id: 'news-signals', label: 'News and Signals', icon: Newspaper, snippet: news.snippet, loading: news.loading },
     { id: 'intelligence', label: 'Intelligence', icon: Brain, snippet: null, loading: false },
     { id: 'canvas', label: 'Canvas', icon: GraduationCap, snippet: canvas.snippet, loading: canvas.loading },

@@ -1,13 +1,17 @@
 // src/components/tileSnippets.ts
 import { useEffect, useState } from 'preact/hooks';
+import type { App as ObsidianApp } from 'obsidian';
 import type AlanCommandCenterPlugin from '../main';
 import { fetchNews } from '../news/api';
 import { fetchNearestDueDate } from '../canvas/api';
+import { getTodayNoteFile, readTodaySections } from '../reflection/dailyNote';
 
 interface SnippetState {
   snippet: string | null;
   loading: boolean;
 }
+
+const BRAIN_DUMP_REFRESH_MS = 10 * 60 * 1000;
 
 export function useNewsSnippet(plugin: AlanCommandCenterPlugin): SnippetState {
   const [snippet, setSnippet] = useState<string | null>(null);
@@ -31,6 +35,38 @@ export function useNewsSnippet(plugin: AlanCommandCenterPlugin): SnippetState {
 
     return () => {
       cancelled = true;
+    };
+  }, []);
+
+  return { snippet, loading };
+}
+
+export function useBrainDumpSnippet(app: ObsidianApp): SnippetState {
+  const [snippet, setSnippet] = useState<string | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    let cancelled = false;
+
+    const pickRandomItem = async () => {
+      try {
+        const file = await getTodayNoteFile(app);
+        const { items } = await readTodaySections(app, file);
+        if (cancelled) return;
+        setSnippet(items.length > 0 ? items[Math.floor(Math.random() * items.length)].text : null);
+      } catch {
+        if (!cancelled) setSnippet(null);
+      } finally {
+        if (!cancelled) setLoading(false);
+      }
+    };
+
+    void pickRandomItem();
+    const intervalId = setInterval(() => void pickRandomItem(), BRAIN_DUMP_REFRESH_MS);
+
+    return () => {
+      cancelled = true;
+      clearInterval(intervalId);
     };
   }, []);
 

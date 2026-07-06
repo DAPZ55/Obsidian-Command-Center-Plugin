@@ -36,7 +36,7 @@ export function App({ app, plugin }: AppProps) {
           >
             {activeSection === null && (
               <div className="h-full w-full overflow-y-auto p-sp-4">
-                <TileGrid plugin={plugin} onSelect={setActiveSection} />
+                <TileGrid app={app} plugin={plugin} onSelect={setActiveSection} />
               </div>
             )}
             {activeSection !== null && (
